@@ -18,19 +18,20 @@
 #include "eirikm_leader.c"
 
 // Layer shorthand
-#define _QW 0
-#define _NAV 1
-#define _SYM 2
-//#define _STN 3
+#define _COL 0
+#define _QW 1
+#define _NAV 2
+#define _SYM 3
 #define _MED 4
 #define _KBD 5
 
 #define KC_AE LALT(KC_QUOT)
 #define KC_OE LALT(KC_O)
 #define KC_AA LALT(KC_A)
-#define SFT_ENT KC_SFTENT
 
-#define CL_CTRL LCTL_T(KC_CAPS)
+#define LS_Z MT(MOD_LSFT, KC_Z)
+#define RS_SL MT(MOD_RSFT, KC_SLSH)
+#define NAV_SPC LT(_NAV, KC_SPC)
 
 // media
 #define M_PLAY KC_MEDIA_PLAY_PAUSE
@@ -67,25 +68,47 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
+/* Colemak
+ * .--------------------------------------------------------------------------------------------------------------------------------------.
+ * | ESC / `| 1      | 2      | 3      | 4      | 5      |        | _KBD   |        | 6      | 7      | 8      | 9      | 0      | `      |
+ * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------|
+ * | TAB    | Q      | W      | F      | P      | G      |        |        |        | J      | L      | U      | Y      | ;      | '      |
+ * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------+--------|
+ * | LCTRL  | A      | R      | S      | T      | D      |        |        |        | H      | N      | E      | I      | O      | ENTER  |
+ * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------------------------+--------|
+ * | LSHT/( | LSHT/Z | X      | C      | V      | B      |        |        |        | K      | M      | ,      | .      | RSHT / | RSHT/) |
+ * |--------+--------+--------+--------+--------+-----------------+--------+--------+--------+--------+-----------------+--------+--------|
+ * |        |        |        | LALT   | LGUI   | BS     | SYM_L  | SWP H  | NAV_L  | SPC    | RGUI   | RALT   | _MED   |        | LEAD   |
+ * '--------------------------------------------------------------------------------------------------------------------------------------'
+ */
+
+[_COL] = { /* Colemak */
+{ KC_GESC, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    _______, MO(_KBD),_______, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV   },
+{ KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    _______, _______, _______, KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_QUOT  },
+{ KC_LCTRL,KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    _______, _______, _______, KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_ENT   },
+{ KC_LSPO, LS_Z,    KC_X,    KC_C,    KC_V,    KC_B,    _______, _______, _______, KC_K,    KC_M,    KC_COMM, KC_DOT,  RS_SL,   KC_RSPC  },
+{ _______, _______, _______, KC_LALT, KC_LGUI, KC_BSPC, MO(_SYM),SH_TT,   MO(_NAV),KC_SPC,  KC_RGUI, KC_RALT, MO(_MED),_______, KC_LEAD  },
+},
+
 /* QWERTY
  * .--------------------------------------------------------------------------------------------------------------------------------------.
- * | ESC / ` | 1     | 2      | 3      | 4      | 5      |        | _KBD   |        | 6      | 7      | 8      | 9      | 0      | `      |
+ * | ESC / `| 1      | 2      | 3      | 4      | 5      |        | _KBD   |        | 6      | 7      | 8      | 9      | 0      | `      |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------|
  * | TAB    | Q      | W      | E      | R      | T      |        |        |        | Y      | U      | I      | O      | P      | '      |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+-----------------+--------|
- * | CPS / LCTRL| A  | S      | D      | F      | G      |        |        |        | H      | J      | K      | L      | ;      | SFTENT |
+ * | LCTRL  | A      | S      | D      | F      | G      |        |        |        | H      | J      | K      | L      | ;      | ENTER  |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------------------------+--------|
- * | LSHT / ( | Z    | X      | C      | V      | B      |        |        |        | N      | M      | ,      | .      | /      | RSHT / ) |
+ * | LSHT/( | LSHT/Z | X      | C      | V      | B      |        |        |        | N      | M      | ,      | .      | RSHT / | RSHT/) |
  * |--------+--------+--------+--------+--------+-----------------+--------+--------+--------+--------+-----------------+--------+--------|
- * |        |        |        | LALT   | LGUI   | BACKSP | SYM_L  | SWP H  | NAV_L  | SPACE  | RGUI   | RALT   | _MED   |        | LEAD   |
+ * |        |        |        | LALT   | LGUI   | BS     | SYM_L  | SWP H  | NAV_L  | SPC    | RGUI   | RALT   | _MED   |        | LEAD   |
  * '--------------------------------------------------------------------------------------------------------------------------------------'
  */
 
  [_QW] = { /* QWERTY */
-  { KC_GESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    _______, MO(_KBD),_______, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV   },
+  { KC_GESC, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    _______, MO(_KBD),_______, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV   },
   { KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    _______, _______, _______, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_QUOT  },
-  { CL_CTRL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    _______, _______, _______, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, SFT_ENT  },
-  { KC_LSPO, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    _______, _______, _______, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSPC  },
+  { KC_LCTRL,KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    _______, _______, _______, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT   },
+  { KC_LSPO, LS_Z,    KC_X,    KC_C,    KC_V,    KC_B,    _______, _______, _______, KC_N,    KC_M,    KC_COMM, KC_DOT,  RS_SL,   KC_RSPC  },
   { _______, _______, _______, KC_LALT, KC_LGUI, KC_BSPC, MO(_SYM),SH_TT,   MO(_NAV),KC_SPC,  KC_RGUI, KC_RALT, MO(_MED),_______, KC_LEAD  },
  },
 
@@ -99,7 +122,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
  * |        |        | BTN1   | BTN2   | BTN3   |        | WIN1/2 | WINFUL | WIN2/2 |        |        |        |        |        |        |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        | DEL    |        |        |        |        |        |        |        |        | FN     |
+ * |        |        |        |        |        | DEL    |        |        |        |        |        |        |        |        |        |
  * '--------------------------------------------------------------------------------------------------------------------------------------'
  */
 
@@ -194,7 +217,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_KBD] = { /* KEYBOARD */
    { XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RESET   },
-   { XXXXXXX, TO(_QW), XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
+   { XXXXXXX, DF(_QW), DF(_COL),  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
 //   { XXXXXXX, XXXXXXX, TO(_STN), XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
    { XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
    { XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
