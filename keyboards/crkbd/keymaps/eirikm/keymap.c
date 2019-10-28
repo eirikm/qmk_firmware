@@ -37,6 +37,10 @@ enum custom_keycodes {
   KC_RACL // right alt / colon
 };
 
+#define KC_AE LALT(KC_QUOT)
+#define KC_OE LALT(KC_O)
+#define KC_AA LALT(KC_A)
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_COLEMAK] = LAYOUT(
   //,-----------------------------------------.                ,---------------------------------------------.
@@ -46,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+-------+------+-------+--------|
     KC_LSPO,  KC_Z,  KC_X,  KC_C,  KC_V,  KC_B,                   KC_K,  KC_M,KC_COMM,KC_DOT,KC_SLSH, KC_RSPC,
   //|------+------+------+------+------+------+------|  |------+------+------+-------+------+-------+--------|
-                               KC_LGESC,LOWER ,KC_BSPC,  KC_SPC, RAISE, KC_RACL
+                               KC_LGESC,KC_BSPC,LOWER,    RAISE,KC_SPC,KC_RACL
                               //`--------------------'  `--------------------'
   ),
 
@@ -58,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+-------+-------+-------+-------|                |------+------+------+------+------+------|
     KC_LSFT, KC_NO,KC_BTN2,KC_WH_D,KC_WH_U,KC_BTN1,                KC_HOME,KC_PGDN,KC_PGUP,KC_END,KC_NO,KC_NO,
   //|------+------+-------+-------+-------+-------+------|  |------+------+------+------+------+------+------|
-                                    KC_LGUI, LOWER,KC_SPC,   KC_ENT, RAISE,KC_RALT
+                                    KC_LGUI,KC_BSPC,LOWER,   RAISE,KC_SPC,KC_RALT
                                   //`--------------------'  `--------------------'
   ),
 
@@ -70,19 +74,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
     KC_LSFT, KC_F6, KC_F7, KC_F8, KC_F9,KC_F10,                KC_UNDS,KC_PLUS,KC_LBRC,KC_RBRC,KC_BSLS,KC_TILD,
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                KC_LGUI, LOWER,KC_SPC,   KC_ENT, RAISE,KC_RALT
+                                KC_LGUI,KC_BSPC,LOWER,    RAISE,KC_SPC,KC_RALT
                               //`--------------------'  `--------------------'
   ),
 
   [_ADJUST] = LAYOUT(
   //,-----------------------------------------.                ,-----------------------------------------.
-      RESET,RGBRST, KC_NO, KC_NO, KC_NO, KC_NO,                  KC_NO,KC__MUTE, KC_NO, KC_NO, KC_NO, KC_NO,
+      RESET, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                  KC_NO, KC_NO, KC_AE, KC_OE, KC_AA, KC_NO,
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-    RGB_TOG,RGB_HUI,RGB_SAI,RGB_VAI,RGB_SPI,KC_NO,               KC_PAUSE,KC__VOLUP, KC_NO, KC_NO, KC_NO, KC_NO,
+      KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,            KC_PAUSE,KC__VOLUP, KC_NO, KC_NO, KC_NO, KC_NO,
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-    RGB_MOD,RGB_HUD,RGB_SAD,RGB_VAD,RGB_SPD,KC_NO,               KC_SCROLLLOCK,KC__VOLDOWN, KC_NO, KC_NO, KC_NO, RGB_RMOD,
+    KC_LSFT, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,     KC_SCROLLLOCK,KC__VOLDOWN, KC_NO, KC_NO, KC_NO, KC_NO,
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                KC_LGUI, LOWER,KC_SPC,   KC_ENT, RAISE,KC_RALT
+                                KC_LGUI,KC_BSPC,LOWER,    RAISE,KC_SPC,KC_RALT
                               //`--------------------'  `--------------------'
   )
 };
