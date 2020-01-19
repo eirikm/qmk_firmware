@@ -2,11 +2,6 @@
 
 extern keymap_config_t keymap_config;
 
-#ifdef RGBLIGHT_ENABLE
-//Following line allows macro to read current RGB settings
-extern rgblight_config_t rgblight_config;
-#endif
-
 #ifdef OLED_DRIVER_ENABLE
 static uint32_t oled_timer = 0;
 #endif
@@ -33,9 +28,7 @@ enum custom_keycodes {
   COLEMAK = SAFE_RANGE,
   LOWER,
   RAISE,
-  ADJUST,
-  RGBRST,
-  KC_RACL // right alt / colon
+  ADJUST
 };
 
 #define KC_AE LALT(KC_QUOT)
@@ -48,8 +41,6 @@ enum custom_keycodes {
 #define BS_LOW LT(_LOWER, KC_BSPC)
 #define SPC_RS LT(_RAISE, KC_SPC)
 
-// TODO ta bort alt med LEDs
-
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_COLEMAK] = LAYOUT(
@@ -60,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|-------+-------+-------+-------+-------+-------|                  |-------+-------+-------+-------+-------+-------|
      KC_LSPO,   KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,                      KC_K,   KC_M,KC_COMM, KC_DOT,KC_SLSH,KC_RSPC,
   //|-------+-------+-------+-------+-------+-------+-------|  |-------+-------+-------+-------+-------+-------+-------|
-                                         OPT,    CMD, BS_LOW,    SPC_RS,  LOWER,  RAISE
+                                         OPT,    CMD, BS_LOW,    SPC_RS,MO(_FNUM),ADJUST
                                   //`-----------------------'  `-----------------------'
   ),
 
@@ -72,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|-------+-------+-------+-------+-------+-------|                  |-------+-------+-------+-------+-------+-------|
      KC_LSFT,_______,_______,_______,_______,_______,                   _______,_______,_______,_______,_______,_______,
   //|-------+-------+-------+-------+-------+-------+-------|  |-------+-------+-------+-------+-------+-------+-------|
-                                     _______,_______,_______,   _______,_______,_______
+                                     _______,_______,_______,    ADJUST,_______,_______
                                   //`-----------------------'  `-----------------------'
   ),
 
@@ -84,7 +75,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|-------+-------+-------+-------+-------+-------|                  |-------+-------+-------+-------+-------+-------|
      KC_LSFT,_______,_______,_______,_______,_______,                   _______,_______,_______,_______,_______,_______,
   //|-------+-------+-------+-------+-------+-------+-------|  |-------+-------+-------+-------+-------+-------+-------|
-                                     _______,_______,_______,   _______,_______,_______
+                                     _______,_______, KC_DEL,   _______,_______,_______
                                   //`-----------------------'  `-----------------------'
   ),
 
@@ -348,7 +339,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
     // set_timelog();
   }
-  static uint16_t my_colon_timer;
 
   switch (keycode) {
     case LOWER:
@@ -376,44 +366,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           layer_off(_ADJUST);
         }
         return false;
-    case KC_RACL:
-        if (record->event.pressed) {
-          my_colon_timer = timer_read();
-          register_code(KC_RALT);
-        } else {
-          unregister_code(KC_RALT);
-          if (timer_elapsed(my_colon_timer) < TAPPING_TERM) {
-            SEND_STRING(":"); // Change the character(s) to be sent on tap here
-          }
-        }
-        return false;
-    case RGBRST:
-      #ifdef RGBLIGHT_ENABLE
-        if (record->event.pressed) {
-          eeconfig_update_rgblight_default();
-          rgblight_enable();
-          RGB_current_mode = rgblight_config.mode;
-        }
-      #endif
-      #ifdef RGB_MATRIX_ENABLE
-        if (record->event.pressed) {
-          eeconfig_update_rgb_matrix_default();
-          rgb_matrix_enable();
-        }
-      #endif
-      break;
   }
   return true;
 }
 
-#ifdef RGB_MATRIX_ENABLE
-
-void suspend_power_down_keymap(void) {
-    rgb_matrix_set_suspend_state(true);
-}
-
-void suspend_wakeup_init_keymap(void) {
-    rgb_matrix_set_suspend_state(false);
-}
-
-#endif
