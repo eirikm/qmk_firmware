@@ -18,12 +18,13 @@
 #define KC_AE LALT(KC_QUOT)
 #define KC_OE LALT(KC_O)
 #define KC_AA LALT(KC_A)
+#define CTRL_ESC MT(MOD_LCTL, KC_ESC)
 
 enum layers {
     _COLEMAK = 0,
     _SYM,
     _NAV,
-    _ADJUST
+    _NUM
 };
 
 enum custom_keycodes {
@@ -45,16 +46,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *  |--------+--------+--------+--------+--------+--------+                                      |--------+--------+--------+--------+--------+--------|
  *  |Ctrl/Esc| A      | R      | S      | T      | D      |                                      | H      | N      | E      | I      | O      | Enter  |
  *  |--------+--------+--------+--------+--------+--------+--------+--------.  ,--------+--------+--------+--------+--------+--------+--------+--------|
- *  | LSHT/( | Z      | X      | C      | V      | B      |        | NavL   |  | SymL   |        | K      | M      | ,  <   | . >    | /  ?   | RSHT/( |
+ *  | LSHT/( | Z      | X      | C      | V      | B      |        |        |  |        |        | K      | M      | ,  <   | . >    | /  ?   | RSHT/( |
  *  `--------------------------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------------------------'
  *                             | Mute   | Alt    | GUI    |BSpace  | SymL   |  | NavL   | Space  | NumL   |        |        |
  *                             `--------------------------------------------'  `--------------------------------------------'
  */
     [_COLEMAK] = LAYOUT(
        KC_TAB,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                                           KC_J,    KC_L,    KC_U,    KC_Y, KC_SCLN, KC_QUOT,
-       MT(MOD_LCTL,KC_ESC),KC_A,    KC_R,    KC_S,    KC_T,    KC_D,                                           KC_H,    KC_N,    KC_E,    KC_I,    KC_O,  KC_ENT,
-      KC_LSPO,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B, XXXXXXX,MO(_NAV),   MO(_SYM), XXXXXXX,    KC_K,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSPC,
-                                 KC_MUTE, KC_LALT, KC_LCMD, KC_BSPC,MO(_SYM),   MO(_NAV),  KC_SPC, MO(_ADJUST), XXXXXXX, XXXXXXX
+     CTRL_ESC,    KC_A,    KC_R,    KC_S,    KC_T,    KC_D,                                           KC_H,    KC_N,    KC_E,    KC_I,    KC_O,  KC_ENT,
+      KC_LSPO,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX,    KC_K,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSPC,
+                                 KC_MUTE, KC_LALT, KC_LCMD, KC_BSPC,MO(_SYM),   MO(_NAV),  KC_SPC,MO(_NUM), XXXXXXX, XXXXXXX
     ),
 /*
  * Lower Layer: Symbols
@@ -108,7 +109,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-    [_ADJUST] = LAYOUT(
+    [_NUM] = LAYOUT(
       _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                       KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
       _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_F12,
       _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, _______, _______, _______, _______, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
@@ -136,7 +137,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 //layer_state_t layer_state_set_user(layer_state_t state) {
-//    return update_tri_layer_state(state, _SYM, _NAV, _ADJUST);
+//    return update_tri_layer_state(state, _SYM, _NAV, _NUM);
 //}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -213,8 +214,8 @@ static void render_status(void) {
         case _NAV:
             oled_write_P(PSTR("Navigation\n"), false);
             break;
-        case _ADJUST:
-            oled_write_P(PSTR("Adjust\n"), false);
+        case _NUM:
+            oled_write_P(PSTR("Num\n"), false);
             break;
         default:
             oled_write_P(PSTR("Undefined\n"), false);
