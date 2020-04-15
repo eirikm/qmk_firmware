@@ -19,6 +19,9 @@
 #define KC_OE LALT(KC_O)
 #define KC_AA LALT(KC_A)
 #define CTRL_ESC MT(MOD_LCTL, KC_ESC)
+#define TG_HAZE LCAG(KC_H)
+#define HAZE_PL LCAG(KC_G)
+#define HAZE_MI LCAG(KC_J)
 
 enum layers {
     _COLEMAK = 0,
@@ -46,7 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *  |--------+--------+--------+--------+--------+--------+                                      |--------+--------+--------+--------+--------+--------|
  *  |Ctrl/Esc| A      | R      | S      | T      | D      |                                      | H      | N      | E      | I      | O      | Enter  |
  *  |--------+--------+--------+--------+--------+--------+--------+--------.  ,--------+--------+--------+--------+--------+--------+--------+--------|
- *  | LSHT/( | Z      | X      | C      | V      | B      |        |        |  |        |        | K      | M      | ,  <   | . >    | /  ?   | RSHT/( |
+ *  | LSHT/( | Z      | X      | C      | V      | B      | MEH    |        |  |        |        | K      | M      | ,  <   | . >    | /  ?   | RSHT/( |
  *  `--------------------------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------------------------'
  *                             | Mute   | Alt    | GUI    |BSpace  | SymL   |  | NavL   | Space  | NumL   |        |        |
  *                             `--------------------------------------------'  `--------------------------------------------'
@@ -54,8 +57,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_COLEMAK] = LAYOUT(
        KC_TAB,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                                           KC_J,    KC_L,    KC_U,    KC_Y, KC_SCLN, KC_QUOT,
      CTRL_ESC,    KC_A,    KC_R,    KC_S,    KC_T,    KC_D,                                           KC_H,    KC_N,    KC_E,    KC_I,    KC_O,  KC_ENT,
-      KC_LSPO,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX,    KC_K,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSPC,
-                                 KC_MUTE, KC_LALT, KC_LCMD, KC_BSPC,MO(_SYM),   MO(_NAV),  KC_SPC,MO(_NUM), XXXXXXX, XXXXXXX
+      KC_LSPO,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,  KC_MEH, XXXXXXX,    XXXXXXX, XXXXXXX,    KC_K,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSPC,
+                                 KC_MUTE, KC_LALT, KC_LCMD, KC_BSPC,MO(_SYM),   MO(_NAV),  KC_SPC,MO(_NUM), XXXXXXX, TG_HAZE
     ),
 /*
  * Lower Layer: Symbols
@@ -250,9 +253,9 @@ void encoder_update_user(uint8_t index, bool clockwise) {
     else if (index == 1) {
         // Page up/Page down
         if (clockwise) {
-            tap_code(KC_PGDN);
+            tap_code16(HAZE_PL);
         } else {
-            tap_code(KC_PGUP);
+            tap_code16(HAZE_MI);
         }
     }
 }
